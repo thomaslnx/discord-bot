@@ -8,6 +8,10 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
+  const serverId = client.guilds.cache.get('832631330730410075');
+  const usersList = serverId.members.cache.forEach(member => 
+                      console.log('Usuários conectados: ', member.user.username)
+                    );
   const directMessageId = message.content.match(/[^<@!]\d+/g);
   const thomaslnxUserId = '542764345273090061';
   
@@ -16,7 +20,7 @@ client.on('message', message => {
   if (!directMessageId) {
     return ;
   } else if ((directMessageId[0] === thomaslnxUserId) && (whoSendMeMessage !== client.user.username)) {
-    console.log('Client object: ', client);
+    // console.log('Client object: ', client);
     message.channel.send(`@thomaslnx você recebeu uma mensagem do usuário ${whoSendMeMessage}!`)
   }
 });
