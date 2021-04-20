@@ -16,6 +16,7 @@ client.on('message', message => {
   if (!directMessageId) {
     return ;
   } else if ((directMessageId[0] === thomaslnxUserId) && (whoSendMeMessage !== client.user.username)) {
+    console.log('Client object: ', client);
     message.channel.send(`@thomaslnx você recebeu uma mensagem do usuário ${whoSendMeMessage}!`)
   }
 });
