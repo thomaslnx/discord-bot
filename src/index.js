@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
-const config = require('../config.json');
 require('dotenv').config();
+
+const smsClient = require('./services/sms.js');
 
 const client = new Discord.Client();
 
@@ -10,9 +11,11 @@ client.once('ready', () => {
 
 client.on('message', message => {
   const serverId = client.guilds.cache.get('832631330730410075');
+  let users = [];
   const usersList = serverId.members.cache.forEach(member => 
-                      console.log('Usuários conectados: ', member.user.username)
-                    );
+    users.push(member.user.username)
+  );
+  console.log('User list: ', users)
   const directMessageId = message.content.match(/[^<@!]\d+/g);
   const thomaslnxUserId = '542764345273090061';
   
@@ -21,7 +24,21 @@ client.on('message', message => {
   if (!directMessageId) {
     return ;
   } else if ((directMessageId[0] === thomaslnxUserId) && (whoSendMeMessage !== client.user.username)) {
-    // console.log('Client object: ', client);
+
+    smsClient.messages.create({
+      body: `New direct message from DISCORD user @${whoSendMeMessage}`,
+      from: '+19104904325',
+      to: '+556399946-1326'
+    })
+    .then(message => {
+      // console.log('Conteúdo do objeto message: ', message)
+      const customMessage = `New direct message from DISCORD user @${whoSendMeMessage}`;
+      message.body = customMessage;
+
+      return message;
+    })
+    .catch(err => console.error('Error: ', err));
+    
     message.channel.send(`@thomaslnx você recebeu uma mensagem do usuário ${whoSendMeMessage}!`)
   }
 });
