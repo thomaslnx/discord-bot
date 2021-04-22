@@ -12,10 +12,9 @@ client.once('ready', () => {
 client.on('message', message => {
   const serverId = client.guilds.cache.get('832631330730410075');
   let users = [];
-  const usersList = serverId.members.cache.forEach(member => 
+  const usersList = serverId.members.cache.forEach(member =>
     users.push(member.user.username)
   );
-  console.log('User list: ', users)
   const directMessageId = message.content.match(/[^<@!]\d+/g);
   const thomaslnxUserId = '542764345273090061';
   
@@ -24,7 +23,9 @@ client.on('message', message => {
   if (!directMessageId) {
     return ;
   } else if ((directMessageId[0] === thomaslnxUserId) && (whoSendMeMessage !== client.user.username)) {
-
+    /**
+     * Next feature: let user choose kind of message to sent for offline discord user: SMS or VOICE message
+     */
     smsClient.messages.create({
       body: `New direct message from DISCORD user @${whoSendMeMessage}`,
       from: '+19104904325',
