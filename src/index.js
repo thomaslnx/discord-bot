@@ -16,7 +16,7 @@ client.on('message', message => {
     users.push(member.user.username)
   );
   const directMessageId = message.content.match(/[^<@!]\d+/g);
-  const thomaslnxUserId = '542764345273090061';
+  const thomaslnxUserId = process.env.PERSONAL_DISCORD_ID;
   
   const whoSendMeMessage = message.author.username;
 
@@ -28,8 +28,8 @@ client.on('message', message => {
      */
     smsClient.messages.create({
       body: `New direct message from DISCORD user @${whoSendMeMessage}`,
-      from: '+19104904325',
-      to: '+556399946-1326'
+      from: process.env.TWILIO_PHONE,
+      to: process.env.DESTINATION_PHONE,
     })
     .then(message => {
       // console.log('Conteúdo do objeto message: ', message)
