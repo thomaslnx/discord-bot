@@ -10,11 +10,22 @@ client.once('ready', () => {
 });
 
 client.on('message', message => {
-  const serverId = client.guilds.cache.get('832631330730410075');
-  let users = [];
-  const usersList = serverId.members.cache.forEach(member =>
-    users.push(member.user.username)
-  );
+  const botServer = client.guilds.cache.get(process.env.DISCORD_BOT_ID);
+  let allServerUsers = [];
+  let justOnLineUsers = [];
+  botServer.members.guild.members.cache.map(user => allServerUsers.push({
+    userName: user.user.username,
+    userId: user.user.id
+  }));
+
+  botServer.members.guild.presences.cache.map(user => justOnLineUsers.push({
+    userId: user.userID,
+    userStatus: user.status
+  }));
+
+  console.log('Presença dos usuários: ', justOnLineUsers);
+  // console.log('Objeto de presença dos usuários: ', botServer.members.guild.presences.cache);
+  
   const directMessageId = message.content.match(/[^<@!]\d+/g);
   const thomaslnxUserId = process.env.PERSONAL_DISCORD_ID;
   
@@ -26,6 +37,10 @@ client.on('message', message => {
     /**
      * Next feature: let user choose kind of message to sent for offline discord user: SMS or VOICE message
      */
+    const thomasIsOnLine = users.includes('thomaslnx');
+    console.log('Thomaslnx está on line? ', thomasIsOnLine);
+
+
     smsClient.messages.create({
       body: `New direct message from DISCORD user @${whoSendMeMessage}`,
       from: process.env.TWILIO_PHONE,
